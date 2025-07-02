@@ -147,9 +147,15 @@ def iniciar_juego(nombre_pokemon, longitud):
     def on_key(event, row_index, col_index):
         widget = event.widget
         value = widget.get()
+
+        if event.keysym == "BackSpace":
+            if not value and col_index > 0:
+                entries_grid[row_index][col_index - 1].focus()
+            return
+
         if len(value) > 1:
             widget.delete(1, ctk.END)
-        if len(value) == 1 and col_index + 1 < longitud:
+        elif len(value) == 1 and col_index + 1 < longitud:
             entries_grid[row_index][col_index + 1].focus()
 
     def check_attempt():
@@ -426,8 +432,7 @@ def ingresar_patron(longitud):
 
     ctk.CTkButton(ventana, text="Buscar", command=buscar).pack(pady=15)
 
-    ctk.CTkButton(ventana, text="Volver", fg_color="red",
-                  command=lambda: (ventana.destroy(), iniciar_busqueda())).pack(pady=10)
+    ctk.CTkButton(ventana, text="Volver", fg_color="red", command=lambda: (ventana.destroy(), iniciar_busqueda())).pack(pady=10)
 
     ventana.mainloop()
 
@@ -465,14 +470,11 @@ def mostrar_resultados(patron):
             label = ctk.CTkLabel(scroll_frame, text=texto, anchor="w", font=ctk.CTkFont(size=14))
             label.grid(row=fila, column=columna, padx=20, pady=5, sticky="w")
     else:
-        ctk.CTkLabel(ventana, text="No se encontraron coincidencias.",
-                     font=ctk.CTkFont(size=14)).pack(pady=30)
+        ctk.CTkLabel(ventana, text="No se encontraron coincidencias.", font=ctk.CTkFont(size=14)).pack(pady=30)
 
-    ctk.CTkButton(ventana, text="Volver al menú",
-                  command=lambda: (ventana.destroy(), mostrar_menu())).pack(pady=10)
+    ctk.CTkButton(ventana, text="Volver al menú", command=lambda: (ventana.destroy(), mostrar_menu())).pack(pady=10)
 
-    ctk.CTkButton(ventana, text="Volver", fg_color="red",
-                  command=lambda: (ventana.destroy(), ingresar_patron(len(patron)))).pack(pady=10)
+    ctk.CTkButton(ventana, text="Volver", fg_color="red", command=lambda: (ventana.destroy(), ingresar_patron(len(patron)))).pack(pady=10)
 
     ventana.mainloop()
 
@@ -496,9 +498,15 @@ def iniciar_juego_con_chatbot(nombre_pokemon, longitud):
     def on_key(event, row_index, col_index):
         widget = event.widget
         value = widget.get()
+
+        if event.keysym == "BackSpace":
+            if not value and col_index > 0:
+                entries_grid[row_index][col_index - 1].focus()
+            return
+
         if len(value) > 1:
             widget.delete(1, ctk.END)
-        if len(value) == 1 and col_index + 1 < longitud:
+        elif len(value) == 1 and col_index + 1 < longitud:
             entries_grid[row_index][col_index + 1].focus()
 
     def check_attempt():
@@ -578,7 +586,6 @@ def iniciar_juego_con_chatbot(nombre_pokemon, longitud):
     ctk.CTkButton(juego_frame, text="Probar", command=check_attempt).pack(pady=10)
     ctk.CTkButton(juego_frame, text="Volver", fg_color="red", command=lambda: (root.destroy(), mostrar_menu())).pack(pady=10)
 
-    # Lado derecho: Chatbot
     chatbot_frame = ctk.CTkFrame(main_frame)
     chatbot_frame.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
@@ -613,6 +620,8 @@ def iniciar_juego_con_chatbot(nombre_pokemon, longitud):
             respuesta = "Significa que todas las letras que escribiste están en el nombre del Pokémon, pero no en la posición correcta."
         elif ("todo" in pregunta and ("verde" in pregunta)) or ("todas" in pregunta and ("verde" in pregunta)):
             respuesta = "Significa que todas las letras que escribiste están en el nombre del Pokémon y en la posición correcta. GANASTE."
+        elif "pikachu" in pregunta:
+            respuesta = "Debes escribirlo en los cuadros de la derecha."
         elif "verde" in pregunta:
             respuesta = "El color verde indica que la letra está en la posición correcta."
         elif "amarillo" in pregunta or "dorado" in pregunta:

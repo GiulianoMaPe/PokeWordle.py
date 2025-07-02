@@ -147,9 +147,15 @@ def iniciar_juego(nombre_pokemon, longitud):
     def on_key(event, row_index, col_index):
         widget = event.widget
         value = widget.get()
+
+        if event.keysym == "BackSpace":
+            if not value and col_index > 0:
+                entries_grid[row_index][col_index - 1].focus()
+            return
+
         if len(value) > 1:
             widget.delete(1, ctk.END)
-        if len(value) == 1 and col_index + 1 < longitud:
+        elif len(value) == 1 and col_index + 1 < longitud:
             entries_grid[row_index][col_index + 1].focus()
 
     def check_attempt():
@@ -492,9 +498,15 @@ def iniciar_juego_con_chatbot(nombre_pokemon, longitud):
     def on_key(event, row_index, col_index):
         widget = event.widget
         value = widget.get()
+
+        if event.keysym == "BackSpace":
+            if not value and col_index > 0:
+                entries_grid[row_index][col_index - 1].focus()
+            return
+
         if len(value) > 1:
             widget.delete(1, ctk.END)
-        if len(value) == 1 and col_index + 1 < longitud:
+        elif len(value) == 1 and col_index + 1 < longitud:
             entries_grid[row_index][col_index + 1].focus()
 
     def check_attempt():
@@ -608,6 +620,8 @@ def iniciar_juego_con_chatbot(nombre_pokemon, longitud):
             respuesta = "Significa que todas las letras que escribiste están en el nombre del Pokémon, pero no en la posición correcta."
         elif ("todo" in pregunta and ("verde" in pregunta)) or ("todas" in pregunta and ("verde" in pregunta)):
             respuesta = "Significa que todas las letras que escribiste están en el nombre del Pokémon y en la posición correcta. GANASTE."
+        elif "pikachu" in pregunta:
+            respuesta = "Debes escribirlo en los cuadros de la derecha."
         elif "verde" in pregunta:
             respuesta = "El color verde indica que la letra está en la posición correcta."
         elif "amarillo" in pregunta or "dorado" in pregunta:
